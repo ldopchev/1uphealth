@@ -19,7 +19,7 @@ connect.then((db) => {
 const app = express();
 
 // Needed for CORS headers so react app can connect
-app.use(cors());
+// app.use(cors());
 
 // Add Session
 app.use(session({

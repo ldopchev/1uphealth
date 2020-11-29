@@ -25,7 +25,6 @@ RegisterRouter.get('/register', (req, res) => {
 RegisterRouter.get('/code', (req, res) => {
     axios.post('https://api.1up.health/user-management/v1/user/auth-code', userData)
     .then(response => {
-        console.log(response.data);
         // Store code to session data
         let sessionData = req.session;
         sessionData.code = response.data.code;
@@ -39,6 +38,7 @@ RegisterRouter.get('/code', (req, res) => {
 
 // Exchange Code for Token
 RegisterRouter.get('/token', (req, res) => {
+    console.log("Exchange for token", req.session);
     // Exchange Code for token
     let exchangeTokenData = {
         client_id: client_id,
@@ -56,7 +56,7 @@ RegisterRouter.get('/token', (req, res) => {
         res.send(response.data);
     })
     .catch(e => {
-        console.log(e);
+        // console.log(e);
         res.send(e);
     });
 });

@@ -11,6 +11,13 @@ OneUpRouter.get('/connect', (req, res) => {
     
 });
 
+OneUpRouter.get('/connect-url', (req, res) => {
+    // Authorize EPIC app 
+    let token = req.session.token;
+    res.json({url: `https://api.1up.health/connect/system/clinical/${system_id}?client_id=${client_id}&access_token=${token}`});
+    
+});
+
 OneUpRouter.get('/patient', async (req, res) => {
     let requestOptions = {
         headers: {
@@ -22,7 +29,7 @@ OneUpRouter.get('/patient', async (req, res) => {
         let response = await axios.get('https://api.1up.health/fhir/dstu2/Patient', requestOptions);       
         let sessionData = req.session;
         sessionData.oneup_uid_url = response.data.entry[0].fullUrl;
-        res.send(response.data.entry[0].fullUrl);
+        res.json({url: response.data.entry[0].fullUrl});
     } 
     catch(error) {
         console.log(error);
@@ -38,12 +45,12 @@ OneUpRouter.get('/everything', async (req, res) => {
 
     // Parse query string and get url from there or use the one set in session
     let queryString = url.parse(req.url,true).query;
-    let url = queryString.url || req.session.oneup_uid_url;
+    let everythingUrl = queryString.url || req.session.oneup_uid_url;
     try {
         let everythingResponse = await axios(req.session.oneup_uid_url + "/$everything", requestOptions);
         // console.log(everythingResponse.data.entry);
         console.log(everythingResponse.data.link);
-        res.send(everythingResponse.data);
+        res.json(everythingResponse.data);
     } 
     catch(e)  {
         console.log(e);
