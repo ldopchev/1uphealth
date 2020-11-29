@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const uuid = require('uuid').v4;
 const MongoStore = require('connect-mongo')(session);
-const cors = require('cors');
+// const cors = require('cors');
 
 const OauthRouter = require('./routes/Oauth');
 const OneUpRouter = require('./routes/OneUp');
