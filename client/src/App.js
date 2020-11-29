@@ -8,34 +8,14 @@ import EverythingData from './components/EverythingData';
 function App() {
   const baseUrl = "";
   const [connected, setConnected] = useState(false);
-  const [hasToken, setTokenState] = useState(false);
   const [patientUrl, setPatientUrl] = useState("");
   const [everythingData, setEverythingData] = useState({});
  
   // Get code and exchange for token
   useEffect(() => {
-    // Check flag if token has been retrieved, 
-    // get code in node and exchange for token
-    if(!hasToken) {
-      fetch(`${baseUrl}/oauth/code`)
-      .then(response => response.json())
-      .then(data => {
-        
-        console.log(data);
-        fetch(`${baseUrl}/oauth/token`)
-          .then(response => response.json())
-          .then(data => {
-            console.log(data)
-            setTokenState(true);
-          })
-          .catch(error => {console.log(error)});
-      })
-      .catch(error => {console.log(error)});
-    }
-
     // Set connected to EHR flag if ?success=true
     let urlParams = new URLSearchParams(window.location.search);
-    if(urlParams.get('success') == 'true') {
+    if(urlParams.get('success') === 'true') {
       setConnected(true);
     }
 
@@ -50,28 +30,47 @@ function App() {
   }
   
   const connect = () => {
-    fetch(`${baseUrl}/api/connect-url`)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data)
-      // Redirect to EHR auth page
-      window.location.href = data.url;
-    })
-    .catch(error => console.log(error));
+    fetch(`${baseUrl}/oauth/code`)
+      .then(response => response.json())
+      .then(data => {
+        // Auth code has been retrieved on server
+        // Exchange for token
+        fetch(`${baseUrl}/oauth/token`)
+          .then(response => response.json())
+          .then(data => {
+            // Token has been retrieved on server
+            //Redirect to EHR auth page
+            fetch(`${baseUrl}/api/connect-url`)
+            .then(response => response.json())
+            .then(data => {
+              // Redirect to EHR auth page //
+              window.location.href = data.url;
+            })
+            .catch(error => console.log(error));
+          })
+          .catch(error => {console.log(error)});
+      })
+    .catch(error => {console.log(error)});
+
+    
   }
 
   const getPatient = () => {
     fetch(`${baseUrl}/api/patient`)
     .then(response => response.json())
     .then(data => {
-      console.log(data);
+      console.log(data.url);
       setPatientUrl(data.url);
     })
     .catch(error => console.log(error));
   }
 
   const getEverything = (url) => {
-    fetch(`${baseUrl}/api/everything`)
+    // Send the url we've got
+    const apiUrl = url === undefined ? `${baseUrl}/api/everything` 
+    : `${baseUrl}/api/everything?url=${url}`;
+    
+    fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
       setEverythingData(data);
@@ -90,7 +89,7 @@ function App() {
         </Col>}
 
         {connected && patientUrl === "" && <Col>
-          <Button onClick={ () => getPatient()}>Get Patient Data</Button>
+          <Button onClick={ () => getPatient()}>Get Patient URL</Button>
         </Col> }
 
         {connected && patientUrl !== "" && <Col>
