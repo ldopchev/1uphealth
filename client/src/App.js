@@ -7,8 +7,13 @@ import EverythingData from './components/EverythingData';
 
 function App() {
   const baseUrl = "";
+  
   const [connected, setConnected] = useState(false);
+  
+  //  patientUrl is not used , everything url is stored 
+  // on the server session, will leave here just in case
   const [patientUrl, setPatientUrl] = useState("");
+  
   const [everythingData, setEverythingData] = useState({});
  
   // Get code and exchange for token
@@ -59,14 +64,15 @@ function App() {
     fetch(`${baseUrl}/api/patient`)
     .then(response => response.json())
     .then(data => {
-      console.log(data.url);
-      setPatientUrl(data.url);
+      // console.log(data.url);
+      setPatientUrl(data.url); // Not used
     })
     .catch(error => console.log(error));
   }
 
   const getEverything = (url) => {
     // Send the url we've got
+    // console.log(url);
     const apiUrl = url === undefined ? `${baseUrl}/api/everything` 
     : `${baseUrl}/api/everything?url=${url}`;
     

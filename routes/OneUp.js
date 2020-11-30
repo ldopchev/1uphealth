@@ -44,12 +44,13 @@ OneUpRouter.get('/everything', async (req, res) => {
     };
 
     // Parse query string and get url from there or use the one set in session
-    let queryString = url.parse(req.url,true).query;
-    let everythingUrl = queryString.url || req.session.oneup_uid_url;
+    let queryString = url.parse(req.url, true).query;
+    let everythingUrl = queryString.url || req.session.oneup_uid_url + "/$everything";
+    console.log(queryString.url);
     try {
-        let everythingResponse = await axios(req.session.oneup_uid_url + "/$everything", requestOptions);
+        let everythingResponse = await axios(everythingUrl, requestOptions);
         // console.log(everythingResponse.data.entry);
-        console.log(everythingResponse.data.link);
+        // console.log(everythingResponse.data.link);
         res.json(everythingResponse.data);
     } 
     catch(e)  {
