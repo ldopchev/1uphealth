@@ -14,4 +14,4 @@ Connect will make a series of API calls to get code, exchange for token and redi
 Get Patient Url will retrieve the patient $everything url 
 $Everything will fetch the data and display. 
 
-Note, I did not have time to add the pageination. 
+Pagination is added to the bottom of the page.
