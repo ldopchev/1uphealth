@@ -51,6 +51,7 @@ OneUpRouter.get('/everything', async (req, res) => {
         let everythingResponse = await axios(everythingUrl, requestOptions);
         // console.log(everythingResponse.data.entry);
         // console.log(everythingResponse.data.link);
+        // console.log(everythingResponse.data.total);
         res.json(everythingResponse.data);
     } 
     catch(e)  {

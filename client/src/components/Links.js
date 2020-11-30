@@ -1,29 +1,38 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {Button} from 'react-bootstrap';
 import {Col} from 'react-bootstrap'
 
 function Links(props) {
+    const [previousPage, setPrevious] = useState("");
+    const [total, setTotal] = useState("");
 
     useEffect(() => {
+        
         // Paginator returns the current page, not the previous
-        // Here we grab the skip number and subtract 10 to get the previous
-        // page or the first page if that number is 0
+        // Here we grab the skip number and subtract 10 to calculate the previous
+        // page or the first page if the calculated page is 0
         let matches = props.link[0].url.match(/\d+$/);
+        let totalRecords = props.link[1].url.match(/\d+$/);
         if(matches !== null) {
             let page = matches[0] - 10;
            
             if(page !== 0) {
-                props.link[0].url = props.link[0].url.replace(/\d+$/, page.toString());
+                setPrevious(props.link[0].url.replace(/\d+$/, page.toString()));
             } else {
-                props.link[0].url = props.link[0].url.replace(/_skip=\d+$/, "");
+                setPrevious(props.link[0].url.replace(/\?_skip=\d+$/, ""));
             }
+        }
+
+        if(totalRecords !== null) {
+            setTotal(totalRecords);
         }
        
     }, [props]);
 
     return <>
-        <Col><Button onClick={() => props.getEverything(props.link[0].url)}>Previous</Button></Col>
-        <Col><Button onClick={() => props.getEverything(props.link[1].url)}>Next</Button></Col>
+        <Col className={3}><Button onClick={() => props.getEverything(previousPage)}>Previous</Button></Col>
+        <Col className={3}><Button onClick={() => props.getEverything(props.link[1].url)}>Next</Button></Col>
+        <Col className={6}><div>Total {total} of {props.total}</div></Col>
     </>
 }
 

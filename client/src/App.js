@@ -80,7 +80,6 @@ function App() {
     .then(response => response.json())
     .then(data => {
       setEverythingData(data);
-      console.log(everythingData);
     })
     .catch(error => console.log(error));
   }
@@ -102,7 +101,7 @@ function App() {
           <Button onClick={() => getEverything()}>$everything</Button>
         </Col>}
       </Row>
-      <Row><EverythingData entry={everythingData.entry} link={everythingData.link} getEverything={getEverything}/></Row>
+      <Row><EverythingData entry={everythingData.entry} link={everythingData.link} getEverything={getEverything} total={everythingData.total}/></Row>
     </Container>
   );
 }
