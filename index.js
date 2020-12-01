@@ -27,7 +27,7 @@ app.use(session({
     genid: (req) => {
         return uuid();
     },
-    secret: "1upHealthDemo", // In production we want this to be an env variable
+    secret: "1upHealthDemo", 
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({mongooseConnection: mongoose.connection})
