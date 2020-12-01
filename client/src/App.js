@@ -6,7 +6,7 @@ import EverythingData from './components/EverythingData';
 
 
 function App() {
-  const baseUrl = "";
+  const baseUrl = process.env.APP_HOST || "";
   
   const [connected, setConnected] = useState(false);
   
@@ -101,7 +101,7 @@ function App() {
           <Button onClick={() => getEverything()}>$everything</Button>
         </Col>}
       </Row>
-      <Row><EverythingData entry={everythingData.entry} link={everythingData.link} getEverything={getEverything} total={everythingData.total}/></Row>
+        <Row>{ everythingData.entry && <EverythingData entry={everythingData.entry} link={everythingData.link} getEverything={getEverything} total={everythingData.total}/>}</Row>
     </Container>
   );
 }

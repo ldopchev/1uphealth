@@ -9,7 +9,8 @@ const OauthRouter = require('./routes/Oauth');
 const OneUpRouter = require('./routes/OneUp');
 
 //Connect to MongoDB
-const dbUrl = 'mongodb://localhost:27017/1uphealth';
+const mongodb_host = process.env.MONGODB_HOST || 'localhost';
+const dbUrl = `mongodb://${mongodb_host}:27017/1uphealth`;
 const connect = mongoose.connect(dbUrl);
 connect.then((db) => {
     console.log("Connected correctly to server");
