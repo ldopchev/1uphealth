@@ -15,3 +15,10 @@ Get Patient Url will retrieve the patient $everything url
 $Everything will fetch the data and display. 
 
 Pagination is added to the bottom of the page.
+
+
+# Added Docker Compose for easier setup
+
+before running docker-compose remove "proxy": "http://localhost:5000" from client/package-json
+
+- docker-compose up -d 

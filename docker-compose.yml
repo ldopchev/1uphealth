@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  app:
+    image: node:12-alpine
+    command: sh -c "npm install && npm install nodemon -g && nodemon index.js"
+    ports:
+      - 5000:5000
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      MONGODB_HOST: mongodb
+  mongodb:
+    image: mongo:4.4.2-bionic
+    volumes:
+      - mongodb-volume:/data/db 
+  react:
+    image: node:12-alpine
+    command: sh -c "npm install && REACT_APP_HOST=app npm start"  
+    ports: 
+      - 3000:3000
+    working_dir: /app  
+    volumes:
+      - ./client:/app     
+volumes: 
+  mongodb-volume:
+
